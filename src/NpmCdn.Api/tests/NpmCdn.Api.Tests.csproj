@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>NpmCdn.Api.Tests</RootNamespace>
+    <AssemblyName>NpmCdn.Api.Tests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Moq" />
+    <PackageReference Include="TUnit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NpmCdn.Api\src\NpmCdn.Api.csproj" />
+    <ProjectReference Include="..\src\NpmCdn.Api.csproj" />
+    <ProjectReference Include="..\..\NpmCdn.NpmRegistry\src\NpmCdn.NpmRegistry.csproj" />
+    <ProjectReference Include="..\..\NpmCdn.Storage\src\NpmCdn.Storage.csproj" />
+  </ItemGroup>
+
+</Project>

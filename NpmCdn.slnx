@@ -1,0 +1,45 @@
+<Solution>
+  <Folder Name="/meta/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="Dockerfile" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/NpmCdn.Api/" />
+  <Folder Name="/src/NpmCdn.Api/src/">
+    <Project Path="src/NpmCdn.Api/src/NpmCdn.Api.csproj" />
+  </Folder>
+  <Folder Name="/src/NpmCdn.Api/tests/">
+    <Project Path="src/NpmCdn.Api/tests/NpmCdn.Api.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/NpmCdn.NpmRegistry/" />
+  <Folder Name="/src/NpmCdn.NpmRegistry/src/">
+    <Project Path="src/NpmCdn.NpmRegistry/src/NpmCdn.NpmRegistry.csproj" />
+  </Folder>
+  <Folder Name="/src/NpmCdn.NpmRegistry/tests/">
+    <Project Path="src/NpmCdn.NpmRegistry/tests/NpmCdn.NpmRegistry.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/NpmCdn.Storage/" />
+  <Folder Name="/src/NpmCdn.Storage/src/">
+    <Project Path="src/NpmCdn.Storage/src/NpmCdn.Storage.csproj" />
+  </Folder>
+  <Folder Name="/src/NpmCdn.Storage/tests/">
+    <Project Path="src/NpmCdn.Storage/tests/NpmCdn.Storage.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/NpmCdn.Storage.Aws/" />
+  <Folder Name="/src/NpmCdn.Storage.Aws/src/">
+    <Project Path="src/NpmCdn.Storage.Aws/src/NpmCdn.Storage.Aws/NpmCdn.Storage.Aws.csproj" />
+  </Folder>
+  <Folder Name="/src/NpmCdn.Storage.Aws/tests/">
+    <Project Path="src/NpmCdn.Storage.Aws/tests/NpmCdn.Storage.Aws.Tests/NpmCdn.Storage.Aws.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/NpmCdn.Aspire.ServiceDefaults/">
+    <Project Path="src/NpmCdn.Aspire.ServiceDefaults/NpmCdn.Aspire.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/local/Aspire/">
+    <Project Path="local/Aspire/NpmCdn.Aspire.AppHost/NpmCdn.Aspire.AppHost.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,120 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: npm-cdn-config
+  labels:
+    app: npm-cdn
+data:
+  appsettings.json: |
+    {
+      "Logging": {
+        "LogLevel": {
+          "Default": "Information",
+          "Microsoft.AspNetCore": "Warning"
+        }
+      },
+      "Storage": {
+        "VolumePath": "/cdn-data"
+      },
+      "Eviction": {
+        "RunInterval": "12:00:00",
+        "MaxInactivityPeriod": "30.00:00:00"
+      }
+    }
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: npm-cdn-pvc
+  labels:
+    app: npm-cdn
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: npm-cdn
+  labels:
+    app: npm-cdn
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: npm-cdn
+  template:
+    metadata:
+      labels:
+        app: npm-cdn
+    spec:
+      containers:
+        - name: npm-cdn
+          image: npm-cdn:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: cache-volume
+              mountPath: /cdn-data
+            - name: config-volume
+              mountPath: /app/appsettings.json
+              subPath: appsettings.json
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+      volumes:
+        - name: cache-volume
+          persistentVolumeClaim:
+            claimName: npm-cdn-pvc
+        - name: config-volume
+          configMap:
+            name: npm-cdn-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: npm-cdn-service
+  labels:
+    app: npm-cdn
+spec:
+  type: ClusterIP
+  selector:
+    app: npm-cdn
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: npm-cdn-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+spec:
+  rules:
+    - host: cdn.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: npm-cdn-service
+                port:
+                  number: 80

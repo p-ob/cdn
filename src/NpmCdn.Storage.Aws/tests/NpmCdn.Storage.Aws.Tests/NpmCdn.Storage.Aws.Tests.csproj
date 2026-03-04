@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>NpmCdn.Storage.Aws.Tests</RootNamespace>
+    <AssemblyName>NpmCdn.Storage.Aws.Tests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" />
+    <PackageReference Include="TUnit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NpmCdn.Storage.Aws\NpmCdn.Storage.Aws.csproj" />
+  </ItemGroup>
+
+</Project>

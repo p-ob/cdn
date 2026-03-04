@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <RootNamespace>NpmCdn.Api</RootNamespace>
+    <AssemblyName>NpmCdn.Api</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" />
+    <PackageReference Include="Aspire.StackExchange.Redis" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NpmCdn.NpmRegistry\src\NpmCdn.NpmRegistry.csproj" />
+    <ProjectReference Include="..\..\NpmCdn.Storage\src\NpmCdn.Storage.csproj" />
+    <ProjectReference Include="..\..\NpmCdn.Aspire.ServiceDefaults\NpmCdn.Aspire.ServiceDefaults.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>NpmCdn.Storage.Aws</RootNamespace>
+    <AssemblyName>NpmCdn.Storage.Aws</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\NpmCdn.Storage\src\NpmCdn.Storage.csproj" />
+  </ItemGroup>
+
+</Project>
