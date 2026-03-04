@@ -10,5 +10,6 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableMSTestRunner>true</EnableMSTestRunner>
   </PropertyGroup>
 </Project>
