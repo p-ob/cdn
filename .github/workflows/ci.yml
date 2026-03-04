@@ -111,13 +111,15 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git fetch origin badges || git branch badges
-          git checkout badges || git checkout --orphan badges
-          rm -rf ./*
-          
+
           # The irongut action outputs a Shields.io URL in the Markdown file, not an SVG directly.
-          # We need to extract the URL and download the SVG image.
+          # Extract the URL BEFORE switching branches (rm -rf would delete the file otherwise).
           BADGE_URL=$(grep -o 'https://img.shields.io/badge/Code%20Coverage-[^)]*' code-coverage-results.md || true)
+
+          git fetch origin badges || true
+          git checkout badges 2>/dev/null || git checkout --orphan badges
+          git rm -rf . || true
+
           if [ ! -z "$BADGE_URL" ]; then
             curl -s "$BADGE_URL" -o coverage.svg
             git add coverage.svg
