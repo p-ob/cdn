@@ -1,0 +1,77 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net10.0": {
+      "TUnit": {
+        "type": "Direct",
+        "requested": "[0.9.0, )",
+        "resolved": "0.9.0",
+        "contentHash": "wbL0SWMCBUilNc1uGKcIY56LWmKq7AtjqRZ34q5n92XyHzLr5vr4hHfnlyefl24zKAexXepGq6RShDM95tePuw==",
+        "dependencies": {
+          "TUnit.Assertions": "0.9.0",
+          "TUnit.Engine": "0.9.0"
+        }
+      },
+      "EnumerableAsyncProcessor": {
+        "type": "Transitive",
+        "resolved": "2.1.0",
+        "contentHash": "kcaATgEjEHOUs0/4ZM9Y5QIOHvfWSolkzQg54VxEDvbwRPHL5IVIR7rySFB7Vi8PKQcLYc+8C+Re/4OJaQAdrw=="
+      },
+      "Microsoft.Testing.Extensions.TrxReport.Abstractions": {
+        "type": "Transitive",
+        "resolved": "1.4.3",
+        "contentHash": "16sWznD6ZMok/zgW+vrO6zerCFMD9N+ey9bi1iV/e9xxsQb4V4y/aW6cY/Y7E9jA7pc+aZ6ffZby43yxQOoYZA==",
+        "dependencies": {
+          "Microsoft.Testing.Platform": "1.4.3"
+        }
+      },
+      "Microsoft.Testing.Platform": {
+        "type": "Transitive",
+        "resolved": "1.4.3",
+        "contentHash": "NedIbwl1T7+ZMeg7gwk0Db8/RFLf0siyVpeTcRMMOle6Xl/ujaYOM4Aduo8rEfVqNj3kcQ7blegpyT3dHi+0PA=="
+      },
+      "Microsoft.Testing.Platform.MSBuild": {
+        "type": "Transitive",
+        "resolved": "1.4.3",
+        "contentHash": "1gGqgHtiZ6tZn/6Tby+qlKpNe5Ye/5LnxlSsyl4XMZ4m4V+Cu1K1m+gD1zxoxHIvLjgX8mCnQRK95MGBBFuumw==",
+        "dependencies": {
+          "Microsoft.Testing.Platform": "1.4.3"
+        }
+      },
+      "TUnit.Assertions": {
+        "type": "Transitive",
+        "resolved": "0.9.0",
+        "contentHash": "+YWxlv2yxefve9ln5cxxu3jZDRLjRcvsizxFCUKKrwfC+wh/dWpkobNcq+9lPTWDhI9Y5d4l9pSMVo7Ir6GnRg=="
+      },
+      "TUnit.Core": {
+        "type": "Transitive",
+        "resolved": "0.9.0",
+        "contentHash": "aeMSFcbYLyuHJvftnmPNNidRa3oYrBiHKIc39Bqj6aMFRwNxv9nbz/0R00mWJWwEnhrOJQJmcWwjfaz51myBZA=="
+      },
+      "TUnit.Engine": {
+        "type": "Transitive",
+        "resolved": "0.9.0",
+        "contentHash": "GbGQCkH2oGvLXC0bGyzGt55SB+6oVXn9c2JT3lY2nLDO+aMRQvO/Qpa3UWF/0pT6GUJlSHm/YFqVntMtcH35kg==",
+        "dependencies": {
+          "EnumerableAsyncProcessor": "2.1.0",
+          "Microsoft.Testing.Extensions.TrxReport.Abstractions": "1.4.3",
+          "Microsoft.Testing.Platform": "1.4.3",
+          "Microsoft.Testing.Platform.MSBuild": "1.4.3",
+          "TUnit.Core": "0.9.0"
+        }
+      },
+      "npmcdn.storage": {
+        "type": "Project",
+        "dependencies": {
+          "OpenTelemetry.Api": "[1.15.0, )"
+        }
+      },
+      "OpenTelemetry.Api": {
+        "type": "CentralTransitive",
+        "requested": "[1.15.0, )",
+        "resolved": "1.15.0",
+        "contentHash": "vk5OGdf6K9kQScCWo3bRjhDWCv6Pqw92IpX4dlARZ8B1WL7/2NGTDtCkkw42eQf7UdwyoHKzVvMH/PtL8d6z7w=="
+      }
+    }
+  }
+}
