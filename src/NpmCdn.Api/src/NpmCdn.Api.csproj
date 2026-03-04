@@ -3,6 +3,7 @@
   <PropertyGroup>
     <RootNamespace>NpmCdn.Api</RootNamespace>
     <AssemblyName>NpmCdn.Api</AssemblyName>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
   </PropertyGroup>
 
   <ItemGroup>
