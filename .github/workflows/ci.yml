@@ -74,6 +74,12 @@ jobs:
           shopt -s globstar
           for proj in src/**/tests/**/*.csproj; do
             echo "Running tests for $proj"
+            
+            # Grant execute permissions to the built artifact on Linux runners
+            proj_dir=$(dirname "$proj")
+            proj_name=$(basename "${proj%.csproj}")
+            chmod +x "$proj_dir/bin/Release/net10.0/$proj_name" || true
+
             dotnet run --project "$proj" -c Release --no-build -- --report-trx --coverage --coverage-output-format cobertura --coverage-output CodeCoverage.xml
           done
 
