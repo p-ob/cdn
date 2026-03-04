@@ -10,11 +10,6 @@ public class NpmRegistryClient(HttpClient httpClient, HybridCache cache) : INpmR
     private readonly HttpClient _httpClient = httpClient;
     private readonly HybridCache _cache = cache;
 
-    public NpmRegistryClient(HttpClient httpClient)
-        : this(httpClient, null!) // Handled by older DI container rules potentially, but primary constructor handles proper injection ideally. For safety we just use primary.
-    {
-    }
-
     public async Task<string?> ResolveVersionAsync(string packageName, string versionOrTag, CancellationToken cancellationToken = default)
     {
         if (_httpClient.BaseAddress == null)

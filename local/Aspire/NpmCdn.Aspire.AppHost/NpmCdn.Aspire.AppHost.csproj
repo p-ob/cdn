@@ -17,11 +17,7 @@
     <UserSecretsId>d7cc5c21-673f-4bf4-81df-949c93dcfcb6</UserSecretsId>
     <!-- https://github.com/dotnet/aspire/issues/14550 -->
     <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <IncludeDashboard>false</IncludeDashboard>
-    <PublishDashboard>false</PublishDashboard>
+    <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
   </PropertyGroup>
 
 </Project>

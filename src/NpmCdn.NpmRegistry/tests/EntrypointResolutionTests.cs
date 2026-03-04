@@ -15,6 +15,7 @@ public class EntrypointResolutionTests
     public void Setup()
     {
         var services = new ServiceCollection();
+        services.AddHybridCache();
 
         services.AddHttpClient<INpmRegistryClient, NpmRegistryClient>(client =>
         {

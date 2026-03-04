@@ -20,6 +20,7 @@ public class VersionResolutionTests
         // Minimal setup for exact tests. 
         // We will need to mock HttpMessageHandler to simulate NPM registry responses safely without hitting the network on every run.
         var services = new ServiceCollection();
+        services.AddHybridCache();
 
         services.AddHttpClient<INpmRegistryClient, NpmRegistryClient>(client =>
         {

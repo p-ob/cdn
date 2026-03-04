@@ -16,6 +16,15 @@
           "Microsoft.Extensions.Options": "10.0.3"
         }
       },
+      "Microsoft.Testing.Platform.MSBuild": {
+        "type": "Direct",
+        "requested": "[2.1.0, )",
+        "resolved": "2.1.0",
+        "contentHash": "UpfPebXQtHGrWz21+YLHmJSm+5zsuPE9U9pfdCtoB+67g75fDmWlNgpkH2ZmdVhSwkjNIed9Icg8Iu63z2ei5Q==",
+        "dependencies": {
+          "Microsoft.Testing.Platform": "2.1.0"
+        }
+      },
       "Moq": {
         "type": "Direct",
         "requested": "[4.20.72, )",
@@ -216,26 +225,10 @@
           "Microsoft.Testing.Platform": "2.1.0"
         }
       },
-      "Microsoft.Testing.Extensions.TrxReport.Abstractions": {
-        "type": "Transitive",
-        "resolved": "2.1.0",
-        "contentHash": "D8xmIJYQFJ6D49Rx5/vPrkZZxb338Jkew+eSqZLBfBiWKw4QZKy3i1BOXiLfz0lOmaNErwDz/YWRojCdNl+B9Q==",
-        "dependencies": {
-          "Microsoft.Testing.Platform": "2.1.0"
-        }
-      },
       "Microsoft.Testing.Platform": {
         "type": "Transitive",
         "resolved": "2.1.0",
         "contentHash": "aHkjNTGIA+Zbdw6RJgSFrbDrCjO0CgqpElqYcvkRSeUhBv2bKarnvU3ep786U7UqrPlArT/B7VmImRibJD0Zrg=="
-      },
-      "Microsoft.Testing.Platform.MSBuild": {
-        "type": "Transitive",
-        "resolved": "2.1.0",
-        "contentHash": "UpfPebXQtHGrWz21+YLHmJSm+5zsuPE9U9pfdCtoB+67g75fDmWlNgpkH2ZmdVhSwkjNIed9Icg8Iu63z2ei5Q==",
-        "dependencies": {
-          "Microsoft.Testing.Platform": "2.1.0"
-        }
       },
       "System.Diagnostics.EventLog": {
         "type": "Transitive",
@@ -289,6 +282,15 @@
           "Microsoft.Extensions.Caching.Memory": "10.0.3",
           "Microsoft.Extensions.Logging.Abstractions": "10.0.3",
           "Microsoft.Extensions.Options": "10.0.3"
+        }
+      },
+      "Microsoft.Testing.Extensions.TrxReport.Abstractions": {
+        "type": "CentralTransitive",
+        "requested": "[2.1.0, )",
+        "resolved": "2.1.0",
+        "contentHash": "D8xmIJYQFJ6D49Rx5/vPrkZZxb338Jkew+eSqZLBfBiWKw4QZKy3i1BOXiLfz0lOmaNErwDz/YWRojCdNl+B9Q==",
+        "dependencies": {
+          "Microsoft.Testing.Platform": "2.1.0"
         }
       },
       "OpenTelemetry.Api": {

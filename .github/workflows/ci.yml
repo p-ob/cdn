@@ -70,4 +70,4 @@ jobs:
           dotnet-version: '10.0.x'
           
       - name: Execute Tests (TUnit)
-        run: dotnet test NpmCdn.slnx -c Release --no-build
+        run: dotnet test --solution NpmCdn.slnx -c Release --no-build
