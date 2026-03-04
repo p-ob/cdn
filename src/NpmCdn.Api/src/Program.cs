@@ -38,6 +38,7 @@ builder.Services.AddSingleton<IStorageProvider>(new VolumeStorageProvider(storag
 
 builder.Services.Configure<NpmCdn.Api.Configuration.CacheOptions>(builder.Configuration.GetSection("CacheControl"));
 builder.Services.Configure<NpmCdn.Api.Configuration.EvictionOptions>(builder.Configuration.GetSection("Eviction"));
+builder.Services.Configure<NpmCdn.Api.Configuration.AllowedOriginsOptions>(builder.Configuration.GetSection(NpmCdn.Api.Configuration.AllowedOriginsOptions.SectionName));
 builder.Services.AddHostedService<NpmCdn.Api.Services.EvictionBackgroundService>();
 
 var app = builder.Build();
@@ -47,6 +48,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseMiddleware<NpmCdn.Api.Middleware.RefererValidationMiddleware>();
 
 app.MapGet("/npm/{*packageSpec}", NpmCdn.Api.NpmEndpointHandlers.HandlePackageSpecAsync);
 
