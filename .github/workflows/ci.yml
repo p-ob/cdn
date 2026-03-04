@@ -117,6 +117,7 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          git config --local --unset-all http.https://github.com/.extraheader 2>/dev/null || true
 
           # The irongut action outputs a Shields.io URL in the Markdown file, not an SVG directly.
           # Extract the URL BEFORE switching branches (rm -rf would delete the file otherwise).
