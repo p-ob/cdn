@@ -114,7 +114,15 @@ jobs:
           git fetch origin badges || git branch badges
           git checkout badges || git checkout --orphan badges
           rm -rf ./*
-          cp code-coverage-results.md coverage.svg || true # Copying generated badge
-          git add coverage.svg
-          git commit -m "Update coverage badge" || echo "No changes to commit"
-          git push -f origin badges
+          
+          # The irongut action outputs a Shields.io URL in the Markdown file, not an SVG directly.
+          # We need to extract the URL and download the SVG image.
+          BADGE_URL=$(grep -o 'https://img.shields.io/badge/Code%20Coverage-[^)]*' code-coverage-results.md || true)
+          if [ ! -z "$BADGE_URL" ]; then
+            curl -s "$BADGE_URL" -o coverage.svg
+            git add coverage.svg
+            git commit -m "Update coverage badge" || echo "No changes to commit"
+            git push -f origin badges
+          else
+            echo "Failed to extract badge URL from code-coverage-results.md"
+          fi
