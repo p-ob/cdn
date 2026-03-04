@@ -70,4 +70,45 @@ jobs:
           dotnet-version: '10.0.x'
           
       - name: Execute Tests (TUnit)
-        run: dotnet test --solution NpmCdn.slnx -c Release --no-build
+        run: |
+          shopt -s globstar
+          for proj in src/**/tests/**/*.csproj; do
+            echo "Running tests for $proj"
+            dotnet run --project "$proj" -c Release --no-build -- --report-trx --coverage --coverage-output-format cobertura --coverage-output CodeCoverage.xml
+          done
+
+      - name: Code Coverage Report
+        uses: irongut/CodeCoverageSummary@v13.0.2
+        with:
+          filename: '**/CodeCoverage.xml'
+          badge: true
+          fail_below_min: false
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: both
+          thresholds: '50 75'
+
+      - name: Add Coverage PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: github.event_name == 'pull_request'
+        with:
+          recreate: true
+          path: code-coverage-results.md
+
+      - name: Write to Job Summary
+        run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
+
+      - name: Commit Badge
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git fetch origin badges || git branch badges
+          git checkout badges || git checkout --orphan badges
+          rm -rf ./*
+          cp code-coverage-results.md coverage.svg || true # Copying generated badge
+          git add coverage.svg
+          git commit -m "Update coverage badge" || echo "No changes to commit"
+          git push -f origin badges

@@ -1,4 +1,5 @@
 # Npm CDN
+![Coverage](https://raw.githubusercontent.com/p-ob/cdn/badges/coverage.svg)
 
 ## Overview
 This project is an advanced .NET 10 Content Delivery Network (CDN) functioning as a pull-through cache for the public NPM registry. It allows applications to predictably resolve, cache, and serve static assets (such as HTML, CSS, JavaScript, and fonts) hosted within NPM packages, while offloading origin traffic securely and scaling effectively within Kubernetes.
