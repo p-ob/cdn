@@ -40,6 +40,18 @@ The solution is organized using the modern `.slnx` format and embraces Central P
 │   └── NpmCdn.Storage/         # Contains `IStorageProvider` and the persistent volume caching class
 ```
 
+## License & Service Usage
+
+### Software License
+The code in this repository is licensed under the **MIT License**. You are free to fork, modify, and deploy your own instances of this CDN as you see fit. See [LICENSE](LICENSE) for details.
+
+### Official Instance (cdn.pob.dev)
+The official deployment of this software at **cdn.pob.dev** is a proprietary service.
+
+* **No Public Grant:** The MIT license of this source code does **not** grant rights to use, proxy, or link to the `cdn.pob.dev` domain or its underlying infrastructure.
+* **Restricted Access:** Usage of the `cdn.pob.dev` instance is strictly reserved for Patrick O'Brien and authorized projects. 
+* **Unauthorized Traffic:** Any unauthorized use of the official instance may be rate-limited or blocked without notice.
+
 ## AI Agent Developer Notes 🤖
 If you are an AI assistant continuing development on this repository, please heed the following details outlined by the primary human maintainer to ensure alignment with existing architectural patterns:
 
