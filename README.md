@@ -1,5 +1,6 @@
 # Npm CDN
 ![Coverage](https://raw.githubusercontent.com/p-ob/cdn/badges/coverage.svg)
+![License: MIT (code) / Proprietary (deployed)](https://img.shields.io/badge/license-MIT%20%28code%29%20%2F%20Proprietary%20%28deployed%29-blue)
 
 ## Overview
 This project is an advanced .NET 10 Content Delivery Network (CDN) functioning as a pull-through cache for the public NPM registry. It allows applications to predictably resolve, cache, and serve static assets (such as HTML, CSS, JavaScript, and fonts) hosted within NPM packages, while offloading origin traffic securely and scaling effectively within Kubernetes.
@@ -53,3 +54,6 @@ If you are an AI assistant continuing development on this repository, please hee
    - **AWS S3 Backend Implementation:** Add an integration for the `IStorageProvider` using AWSSDK.S3 to allow cloud-managed caching instead of block storage volumes.
    - **Background Sweeper Service:** The platform requires an `IHostedService` background worker to iterate over `GetStalePackagesAsync` and selectively call `DeletePackageVersionAsync` based on configurable timeouts (e.g., 30 days of inactivity).
    - **Kubernetes Integrations:** Scaffolding the `Dockerfile` and deploying standard K8s resources (Deployments, Services, ConfigMaps, PVCs, and Ingress routing).
+
+## License
+This project is dual-licensed. The **source code** is available under the MIT License. However, the **right to deploy and use** the software is reserved exclusively for Patrick O'Brien. See [LICENSE](LICENSE) for full details.
