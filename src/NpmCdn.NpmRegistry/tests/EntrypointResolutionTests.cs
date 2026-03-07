@@ -1,10 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 
-using NpmCdn.NpmRegistry;
-
-using TUnit.Assertions;
-using TUnit.Core;
-
 namespace NpmCdn.NpmRegistry.Tests;
 
 public class EntrypointResolutionTests

@@ -4,16 +4,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Net.Http.Headers;
 
 using Moq;
 
 using NpmCdn.Api.Configuration;
 using NpmCdn.NpmRegistry;
 using NpmCdn.Storage;
-
-using TUnit.Assertions;
-using TUnit.Core;
 
 namespace NpmCdn.Api.Tests;
 
@@ -217,5 +213,51 @@ public class NpmEndpointHandlersTests
         await Assert.That(pkg7).IsEqualTo("@zywave/zui-bundle");
         await Assert.That(ver7).IsEqualTo("latest");
         await Assert.That(path7).IsEqualTo("dist/index.js");
+    }
+
+    [Test]
+    public async Task HandleNpmRequestAsync_ResolvesCorrectContentType()
+    {
+        var testCases = new Dictionary<string, string>
+        {
+            { "index.js", "text/javascript" },
+            { "index.cjs", "text/javascript" },
+            { "index.mjs", "text/javascript" },
+            { "style.css", "text/css" },
+            { "data.json", "application/json" },
+            { "font.woff2", "font/woff2" },
+            { "chunk.js.map", "application/json" },
+            { "unknown.xyz", "application/octet-stream" }
+        };
+
+        foreach (var (fileName, expectedMime) in testCases)
+        {
+            // Arrange
+            _registryMock!.Setup(x => x.ResolveVersionAsync("pkg", "1.0.0", It.IsAny<CancellationToken>()))
+                .ReturnsAsync("1.0.0");
+
+            _storageMock!.Setup(x => x.ReadFileAsync("pkg", "1.0.0", fileName, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream("data"u8.ToArray()));
+
+            var httpContext = new DefaultHttpContext
+            {
+                RequestServices = new ServiceCollection()
+                    .AddLogging()
+                    .AddRouting()
+                    .BuildServiceProvider()
+            };
+
+            // Act
+            var result = await NpmEndpointHandlers.HandleNpmRequestAsync(
+                "pkg", "1.0.0", fileName,
+                _registryMock.Object, _downloaderMock!.Object, _extractor!, _storageMock.Object, _cacheOptions!, _loggerMock!.Object,
+                httpContext, CancellationToken.None);
+
+            // Assert
+            await Assert.That(result).IsNotNull();
+            var streamResult = result as Microsoft.AspNetCore.Http.HttpResults.FileStreamHttpResult;
+            await Assert.That(streamResult).IsNotNull();
+            await Assert.That(streamResult!.ContentType).IsEqualTo(expectedMime);
+        }
     }
 }

@@ -1,5 +1,3 @@
-using Aspire.StackExchange.Redis;
-
 using NpmCdn.NpmRegistry;
 using NpmCdn.Storage;
 
@@ -20,6 +18,12 @@ builder.Services.AddHybridCache(options =>
 #pragma warning restore EXTEXP0018
 
 // Add services to the container.
+builder.Services.AddCors(options =>
+    options.AddDefaultPolicy(policy =>
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()));
+
 builder.Services.AddOpenApi();
 builder.Services.AddHttpClient<INpmRegistryClient, NpmRegistryClient>(client =>
 {
@@ -48,6 +52,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseCors();
 
 app.UseMiddleware<NpmCdn.Api.Middleware.RefererValidationMiddleware>();
 

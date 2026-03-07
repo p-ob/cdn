@@ -1,8 +1,6 @@
 using System.Diagnostics;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 
 using NpmCdn.NpmRegistry;
@@ -259,26 +257,19 @@ public partial class NpmEndpointHandlers
         }
     }
 
+    private static readonly Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider _contentTypeProvider = new();
+
+    static NpmEndpointHandlers()
+    {
+        _contentTypeProvider.Mappings[".cjs"] = "text/javascript";
+        _contentTypeProvider.Mappings[".mjs"] = "text/javascript";
+        _contentTypeProvider.Mappings[".map"] = "application/json";
+    }
+
     private static string GetContentType(string filePath)
     {
-        var ext = Path.GetExtension(filePath).ToLowerInvariant();
-        return ext switch
-        {
-            ".js" => "application/javascript",
-            ".mjs" => "application/javascript",
-            ".css" => "text/css",
-            ".html" => "text/html",
-            ".json" => "application/json",
-            ".svg" => "image/svg+xml",
-            ".png" => "image/png",
-            ".jpg" => "image/jpeg",
-            ".jpeg" => "image/jpeg",
-            ".gif" => "image/gif",
-            ".woff" => "font/woff",
-            ".woff2" => "font/woff2",
-            ".ttf" => "font/ttf",
-            ".eot" => "application/vnd.ms-fontobject",
-            _ => "application/octet-stream"
-        };
+        return _contentTypeProvider.TryGetContentType(filePath, out var contentType) ?
+            contentType :
+            "application/octet-stream";
     }
 }

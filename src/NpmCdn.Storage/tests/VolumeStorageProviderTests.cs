@@ -1,10 +1,5 @@
 using System.Text;
 
-using NpmCdn.Storage;
-
-using TUnit.Assertions;
-using TUnit.Core;
-
 namespace NpmCdn.Storage.Tests;
 
 public class VolumeStorageProviderTests
@@ -72,5 +67,28 @@ public class VolumeStorageProviderTests
         await Assert.That(stale2).IsNotEmpty();
         await Assert.That(stale2.First().PackageName).IsEqualTo(packageName);
         await Assert.That(stale2.First().Version).IsEqualTo(version);
+    }
+
+    [Test]
+    public async Task TouchPackageAccessTimeAsync_DebouncesFastSubsequentTouches()
+    {
+        var packageName = "debounce-pkg";
+        var version = "1.0.0";
+        var accessFile = Path.Combine(_tempDir!, "packages", packageName, version, ".last_accessed");
+
+        // First touch should create the file
+        await _storage!.TouchPackageAccessTimeAsync(packageName, version);
+        await Assert.That(File.Exists(accessFile)).IsTrue();
+
+        var initialWriteTime = File.GetLastWriteTimeUtc(accessFile);
+
+        // Wait a tiny bit and touch again
+        await Task.Delay(100);
+        await _storage.TouchPackageAccessTimeAsync(packageName, version);
+
+        var subsequentWriteTime = File.GetLastWriteTimeUtc(accessFile);
+
+        // Because of the 5-minute debounce interval, the disk file should not have been updated
+        await Assert.That(subsequentWriteTime).IsEqualTo(initialWriteTime);
     }
 }

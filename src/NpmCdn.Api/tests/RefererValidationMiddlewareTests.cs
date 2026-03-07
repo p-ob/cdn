@@ -1,13 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-using Moq;
-
 using NpmCdn.Api.Configuration;
 using NpmCdn.Api.Middleware;
-
-using TUnit.Assertions;
-using TUnit.Core;
 
 namespace NpmCdn.Api.Tests;
 

@@ -5,11 +5,6 @@ using Amazon.S3.Model;
 
 using Moq;
 
-using NpmCdn.Storage.Aws;
-
-using TUnit.Assertions;
-using TUnit.Core;
-
 namespace NpmCdn.Storage.Aws.Tests;
 
 public class S3StorageProviderTests

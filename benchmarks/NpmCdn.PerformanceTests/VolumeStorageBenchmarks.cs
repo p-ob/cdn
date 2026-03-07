@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Jobs;
+
 using NpmCdn.Storage;
 
 namespace NpmCdn.PerformanceTests;
@@ -43,7 +43,7 @@ public class VolumeStorageBenchmarks
     public async Task<long> ReadFileAsync_Throughput()
     {
         using var stream = await _provider.ReadFileAsync(PackageName, Version, FilePath, CancellationToken.None);
-        
+
         using var memoryStream = new MemoryStream();
         await stream!.CopyToAsync(memoryStream);
         return memoryStream.Length;

@@ -86,8 +86,23 @@ public class VolumeStorageProvider : IStorageProvider
         }
     }
 
+    private static readonly ConcurrentDictionary<string, DateTimeOffset> _lastTouched = new();
+    private static readonly TimeSpan _touchDebounce = TimeSpan.FromMinutes(5);
+
     public async Task TouchPackageAccessTimeAsync(string packageName, string version, CancellationToken cancellationToken = default)
     {
+        var lockKey = $"{packageName}@{version}";
+        var now = DateTimeOffset.UtcNow;
+
+        // Debounce: If we wrote the timestamp for this package within the last 5 minutes, skip standard disk IO
+        if (_lastTouched.TryGetValue(lockKey, out var lastTouched) && (now - lastTouched) < _touchDebounce)
+        {
+            return;
+        }
+
+        // Optimistically set the in-memory timestamp so concurrent requests instantly hit the debounce check above
+        _lastTouched[lockKey] = now;
+
         var accessFile = GetPackageAccessFile(packageName, version);
         var dir = Path.GetDirectoryName(accessFile);
         if (dir != null && !Directory.Exists(dir))
@@ -95,9 +110,19 @@ public class VolumeStorageProvider : IStorageProvider
             Directory.CreateDirectory(dir);
         }
 
-        var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-        await File.WriteAllTextAsync(accessFile, timestamp, cancellationToken);
+        var timestamp = now.ToUnixTimeSeconds().ToString();
+        try
+        {
+            await File.WriteAllTextAsync(accessFile, timestamp, cancellationToken);
+        }
+        catch (IOException ex) when (ex.IsFileLockException())
+        {
+            // Specifically ignore ERROR_SHARING_VIOLATION and ERROR_LOCK_VIOLATION. 
+            // Another concurrent request beat us to the disk write, but our in-memory debounce is already updated.
+        }
     }
+
+
 
     public Task DeletePackageVersionAsync(string packageName, string version, CancellationToken cancellationToken = default)
     {

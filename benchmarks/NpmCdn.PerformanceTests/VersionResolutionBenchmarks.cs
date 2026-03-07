@@ -1,26 +1,19 @@
-using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Jobs;
-using NpmCdn.NpmRegistry;
-using System.Text.Json;
 using System.Net;
+
+using BenchmarkDotNet.Attributes;
+
+using NpmCdn.NpmRegistry;
 
 namespace NpmCdn.PerformanceTests;
 
-public class FakeHttpMessageHandler : HttpMessageHandler
+public class FakeHttpMessageHandler(string responseContent) : HttpMessageHandler
 {
-    private readonly string _responseContent;
-
-    public FakeHttpMessageHandler(string responseContent)
-    {
-        _responseContent = responseContent;
-    }
-
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         return Task.FromResult(new HttpResponseMessage
         {
             StatusCode = HttpStatusCode.OK,
-            Content = new StringContent(_responseContent)
+            Content = new StringContent(responseContent)
         });
     }
 }
@@ -28,12 +21,14 @@ public class FakeHttpMessageHandler : HttpMessageHandler
 [MemoryDiagnoser]
 public class VersionResolutionBenchmarks
 {
-    private INpmRegistryClient _client = null!;
+    private NpmRegistryClient _client = null!;
     private NpmRegistryClient _realClient = null!;
 
     [GlobalSetup]
     public void Setup()
     {
+        var cache = new FakeHybridCache();
+
         var metadataJson = @"{
             ""name"": ""jquery"",
             ""dist-tags"": {
@@ -54,7 +49,7 @@ public class VersionResolutionBenchmarks
             BaseAddress = new Uri("https://registry.npmjs.org")
         };
 
-        _realClient = new NpmRegistryClient(httpClient);
+        _realClient = new NpmRegistryClient(httpClient, cache);
         _client = _realClient;
     }
 

@@ -1,3 +1,3 @@
 {
-  "appHostPath": "../local/Aspire/NpmCdn.Aspire.AppHost/NpmCdn.Aspire.AppHost.csproj"
+  "appHostPath": "../local/AppHost/AppHost.csproj"
 }

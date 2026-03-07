@@ -39,7 +39,11 @@
   <Folder Name="/src/NpmCdn.Aspire.ServiceDefaults/">
     <Project Path="src/NpmCdn.Aspire.ServiceDefaults/NpmCdn.Aspire.ServiceDefaults.csproj" />
   </Folder>
-  <Folder Name="/local/Aspire/">
-    <Project Path="local/Aspire/NpmCdn.Aspire.AppHost/NpmCdn.Aspire.AppHost.csproj" />
+  <Folder Name="/local/">
+    <Project Path="local/AppHost/AppHost.csproj" />
+    <Project Path="local/Demo/Demo.csproj" />
+  </Folder>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/NpmCdn.PerformanceTests/NpmCdn.PerformanceTests.csproj" />
   </Folder>
 </Solution>

@@ -1,8 +1,9 @@
 <Project Sdk="Aspire.AppHost.Sdk/13.1.2">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\NpmCdn.Api\src\NpmCdn.Api.csproj" />
-    <ProjectReference Include="..\..\..\src\NpmCdn.Aspire.ServiceDefaults\NpmCdn.Aspire.ServiceDefaults.csproj" IsAspireProjectResource="false" />
+    <ProjectReference Include="..\..\src\NpmCdn.Api\src\NpmCdn.Api.csproj" />
+    <ProjectReference Include="..\Demo\Demo.csproj" />
+    <ProjectReference Include="..\..\src\NpmCdn.Aspire.ServiceDefaults\NpmCdn.Aspire.ServiceDefaults.csproj" IsAspireProjectResource="false" />
   </ItemGroup>
 
   <ItemGroup>

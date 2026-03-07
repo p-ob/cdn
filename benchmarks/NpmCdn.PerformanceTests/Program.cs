@@ -1,8 +1,7 @@
 ﻿using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Jobs;
-using BenchmarkDotNet.Toolchains.InProcess.Emit;
 using BenchmarkDotNet.Running;
-using System.Diagnostics;
+using BenchmarkDotNet.Toolchains.InProcess.Emit;
 
 namespace NpmCdn.PerformanceTests;
 

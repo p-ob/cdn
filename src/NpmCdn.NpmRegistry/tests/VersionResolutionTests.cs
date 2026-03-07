@@ -1,12 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Http;
-
-using Moq;
-
-using NpmCdn.NpmRegistry;
-
-using TUnit.Assertions;
-using TUnit.Core;
 
 namespace NpmCdn.NpmRegistry.Tests;
 

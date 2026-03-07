@@ -5,20 +5,19 @@ using Microsoft.Extensions.Caching.Hybrid;
 
 namespace NpmCdn.NpmRegistry;
 
-public class NpmRegistryClient(HttpClient httpClient, HybridCache cache) : INpmRegistryClient
+public class NpmRegistryClient(
+    HttpClient httpClient,
+    HybridCache cache) : INpmRegistryClient
 {
-    private readonly HttpClient _httpClient = httpClient;
-    private readonly HybridCache _cache = cache;
-
     public async Task<string?> ResolveVersionAsync(string packageName, string versionOrTag, CancellationToken cancellationToken = default)
     {
-        if (_httpClient.BaseAddress == null)
+        if (httpClient.BaseAddress == null)
         {
-            _httpClient.BaseAddress = new Uri("https://registry.npmjs.org");
+            httpClient.BaseAddress = new Uri("https://registry.npmjs.org");
         }
 
         var cacheKey = $"resolution:{packageName}@{versionOrTag}";
-        return await _cache.GetOrCreateAsync(
+        return await cache.GetOrCreateAsync(
             cacheKey,
             async cancel => await ResolveVersionInternalAsync(packageName, versionOrTag, cancel),
             cancellationToken: cancellationToken);
@@ -27,7 +26,7 @@ public class NpmRegistryClient(HttpClient httpClient, HybridCache cache) : INpmR
     private async ValueTask<string?> ResolveVersionInternalAsync(string packageName, string versionOrTag, CancellationToken cancellationToken)
     {
         var url = $"/{Uri.EscapeDataString(packageName)}";
-        var response = await _httpClient.GetAsync(url, cancellationToken);
+        var response = await httpClient.GetAsync(url, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -84,7 +83,7 @@ public class NpmRegistryClient(HttpClient httpClient, HybridCache cache) : INpmR
     public async Task<string> ResolveEntrypointAsync(string packageName, string exactVersion, CancellationToken cancellationToken = default)
     {
         var cacheKey = $"entrypoint:{packageName}@{exactVersion}";
-        return await _cache.GetOrCreateAsync(
+        return await cache.GetOrCreateAsync(
             cacheKey,
             async cancel => await ResolveEntrypointInternalAsync(packageName, exactVersion, cancel),
             cancellationToken: cancellationToken);
@@ -93,7 +92,7 @@ public class NpmRegistryClient(HttpClient httpClient, HybridCache cache) : INpmR
     private async ValueTask<string> ResolveEntrypointInternalAsync(string packageName, string exactVersion, CancellationToken cancellationToken)
     {
         var url = $"/{Uri.EscapeDataString(packageName)}/{exactVersion}";
-        var response = await _httpClient.GetAsync(url, cancellationToken);
+        var response = await httpClient.GetAsync(url, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {

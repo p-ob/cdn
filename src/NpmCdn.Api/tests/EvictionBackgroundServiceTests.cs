@@ -7,8 +7,6 @@ using NpmCdn.Api.Configuration;
 using NpmCdn.Api.Services;
 using NpmCdn.Storage;
 
-using TUnit.Core;
-
 namespace NpmCdn.Api.Tests;
 
 public class EvictionBackgroundServiceTests
