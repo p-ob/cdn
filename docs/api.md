@@ -22,6 +22,15 @@ The path to the file within the package you want to fetch (e.g., `/dist/index.js
 
 If omitted, the CDN employs an **Entrypoint Resolution** strategy, parsing the package's `package.json` to find the default file via the `exports`, `browser`, or `main` fields.
 
+## Redirect Behavior (HTTP 302)
+
+To maximize compatibility with browser caches and edge CDNs, the application utilizes HTTP 302 redirects to resolve requests to their canonical, fully-qualified URL where possible. 
+
+1. **Version Resolution:** Requests with semantic tags or versions (e.g., `@3`) are dynamically resolved and redirected to the exact literal version.
+2. **Entrypoint Resolution:** Requests missing a specific file path are resolved to the package's default entrypoint and redirected to that exact file path.
+
+If a redirect target is deterministically resolved from an exact version (e.g., an exact version missing a file path), the redirect itself is cached as `immutable`. If the redirect target is resolved from a fuzzy version, the redirect is cached for a short duration (`max-age=600`).
+
 ## Caching Headers
 
 The CDN sets aggressive `Cache-Control` headers depending on the type of version requested.
