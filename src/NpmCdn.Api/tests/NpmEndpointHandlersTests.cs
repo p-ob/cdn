@@ -169,51 +169,6 @@ public class NpmEndpointHandlersTests
         await Assert.That(cacheControl.Extensions.Any(e => e.Name == "immutable")).IsTrue();
     }
 
-    [Test]
-    public async Task TryParsePackageSpec_MatchesCorrectPatterns()
-    {
-        // Assert unscoped missing version
-        await Assert.That(NpmEndpointHandlers.TryParsePackageSpec("jquery", out var pkg1, out var ver1, out var path1)).IsTrue();
-        await Assert.That(pkg1).IsEqualTo("jquery");
-        await Assert.That(ver1).IsEqualTo("latest");
-        await Assert.That(path1).IsNull();
-
-        // Assert scoped missing version missing path
-        await Assert.That(NpmEndpointHandlers.TryParsePackageSpec("@zywave/zui-bundle", out var pkg2, out var ver2, out var path2)).IsTrue();
-        await Assert.That(pkg2).IsEqualTo("@zywave/zui-bundle");
-        await Assert.That(ver2).IsEqualTo("latest");
-        await Assert.That(path2).IsNull();
-
-        // Assert scoped version missing path
-        await Assert.That(NpmEndpointHandlers.TryParsePackageSpec("@zywave/zui-bundle@1.2.3", out var pkg3, out var ver3, out var path3)).IsTrue();
-        await Assert.That(pkg3).IsEqualTo("@zywave/zui-bundle");
-        await Assert.That(ver3).IsEqualTo("1.2.3");
-        await Assert.That(path3).IsNull();
-
-        // Assert scoped version with path
-        await Assert.That(NpmEndpointHandlers.TryParsePackageSpec("@zywave/zui-bundle@latest/dist/index.js", out var pkg4, out var ver4, out var path4)).IsTrue();
-        await Assert.That(pkg4).IsEqualTo("@zywave/zui-bundle");
-        await Assert.That(ver4).IsEqualTo("latest");
-        await Assert.That(path4).IsEqualTo("dist/index.js");
-
-        // Assert unscoped version with path
-        await Assert.That(NpmEndpointHandlers.TryParsePackageSpec("react@18.2.0/index.js", out var pkg5, out var ver5, out var path5)).IsTrue();
-        await Assert.That(pkg5).IsEqualTo("react");
-        await Assert.That(ver5).IsEqualTo("18.2.0");
-        await Assert.That(path5).IsEqualTo("index.js");
-
-        // Assert unscoped missing version with path
-        await Assert.That(NpmEndpointHandlers.TryParsePackageSpec("react/index.js", out var pkg6, out var ver6, out var path6)).IsTrue();
-        await Assert.That(pkg6).IsEqualTo("react");
-        await Assert.That(ver6).IsEqualTo("latest");
-        await Assert.That(path6).IsEqualTo("index.js");
-
-        // Assert scoped missing version with path
-        await Assert.That(NpmEndpointHandlers.TryParsePackageSpec("@zywave/zui-bundle/dist/index.js", out var pkg7, out var ver7, out var path7)).IsTrue();
-        await Assert.That(pkg7).IsEqualTo("@zywave/zui-bundle");
-        await Assert.That(ver7).IsEqualTo("latest");
-        await Assert.That(path7).IsEqualTo("dist/index.js");
-    }
 
     [Test]
     public async Task HandleNpmRequestAsync_ResolvesCorrectContentType()

@@ -1,6 +1,6 @@
 namespace NpmCdn.Storage;
 
-public static class IOExceptionExtensions
+internal static class IOExceptionExtensions
 {
     extension(IOException ex)
     {

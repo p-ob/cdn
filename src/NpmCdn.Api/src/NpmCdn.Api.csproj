@@ -19,4 +19,8 @@
     <ProjectReference Include="..\..\NpmCdn.Aspire.ServiceDefaults\NpmCdn.Aspire.ServiceDefaults.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="NpmCdn.Api.Tests" />
+  </ItemGroup>
+
 </Project>

@@ -38,7 +38,7 @@ public class NpmPackageExtractor(IStorageProvider storage)
             var name = entry.Name;
             if (name.StartsWith("package/", StringComparison.OrdinalIgnoreCase))
             {
-                name = name.Substring("package/".Length);
+                name = name["package/".Length..];
             }
 
             // Re-copy the data stream because TarEntry.DataStream doesn't support async reads well natively.

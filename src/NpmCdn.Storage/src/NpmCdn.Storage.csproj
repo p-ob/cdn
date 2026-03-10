@@ -9,4 +9,8 @@
     <PackageReference Include="OpenTelemetry.Api" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="NpmCdn.Storage.Tests" />
+  </ItemGroup>
+
 </Project>

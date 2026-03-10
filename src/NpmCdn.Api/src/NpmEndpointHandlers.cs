@@ -27,7 +27,7 @@ public partial class NpmEndpointHandlers
 
     private static readonly ActivitySource ActivitySource = new("NpmCdn.Api.Requests");
 
-    public static async Task<IResult> HandlePackageSpecAsync(
+    internal static async Task<IResult> HandlePackageSpecAsync(
         string packageSpec,
         [FromServices] INpmRegistryClient registryClient,
         [FromServices] INpmPackageDownloader packageDownloader,
@@ -38,18 +38,23 @@ public partial class NpmEndpointHandlers
         HttpContext context,
         CancellationToken cancellationToken)
     {
-        if (!TryParsePackageSpec(packageSpec, out var packageName, out var version, out var filePath))
-        {
-            return Results.BadRequest("Invalid package specification format.");
-        }
-
-        return await HandleNpmRequestAsync(
-            packageName, version, filePath,
-            registryClient, packageDownloader, packageExtractor, storageProvider, cacheOptions, logger,
-            context, cancellationToken);
+        return !TryParsePackageSpec(packageSpec, out var packageName, out var version, out var filePath)
+            ? Results.BadRequest("Invalid package specification format.")
+            : await HandleNpmRequestAsync(
+            packageName,
+            version,
+            filePath,
+            registryClient,
+            packageDownloader,
+            packageExtractor,
+            storageProvider,
+            cacheOptions,
+            logger,
+            context,
+            cancellationToken);
     }
 
-    public static bool TryParsePackageSpec(string packageSpec, out string packageName, out string version, out string? filePath)
+    private static bool TryParsePackageSpec(string packageSpec, out string packageName, out string version, out string? filePath)
     {
         packageName = string.Empty;
         version = "latest";
@@ -60,7 +65,7 @@ public partial class NpmEndpointHandlers
             return false;
         }
 
-        int nameEndIndex = 0;
+        int nameEndIndex;
         if (packageSpec.StartsWith('@'))
         {
             var slashIndex = packageSpec.IndexOf('/');
@@ -72,62 +77,40 @@ public partial class NpmEndpointHandlers
             var nextAt = packageSpec.IndexOf('@', slashIndex + 1);
             var nextSlash = packageSpec.IndexOf('/', slashIndex + 1);
 
-            if (nextAt != -1 && (nextSlash == -1 || nextAt < nextSlash))
-            {
-                nameEndIndex = nextAt;
-            }
-            else if (nextSlash != -1)
-            {
-                nameEndIndex = nextSlash;
-            }
-            else
-            {
-                nameEndIndex = packageSpec.Length;
-            }
+            nameEndIndex = nextAt != -1 && (nextSlash == -1 || nextAt < nextSlash) ? nextAt : nextSlash != -1 ? nextSlash : packageSpec.Length;
         }
         else
         {
             var nextAt = packageSpec.IndexOf('@');
             var nextSlash = packageSpec.IndexOf('/');
 
-            if (nextAt != -1 && (nextSlash == -1 || nextAt < nextSlash))
-            {
-                nameEndIndex = nextAt;
-            }
-            else if (nextSlash != -1)
-            {
-                nameEndIndex = nextSlash;
-            }
-            else
-            {
-                nameEndIndex = packageSpec.Length;
-            }
+            nameEndIndex = nextAt != -1 && (nextSlash == -1 || nextAt < nextSlash) ? nextAt : nextSlash != -1 ? nextSlash : packageSpec.Length;
         }
 
-        packageName = packageSpec.Substring(0, nameEndIndex);
-        var remainder = packageSpec.Substring(nameEndIndex);
+        packageName = packageSpec[..nameEndIndex];
+        var remainder = packageSpec[nameEndIndex..];
 
         if (remainder.StartsWith('@'))
         {
             var slashIndex = remainder.IndexOf('/');
             if (slashIndex != -1)
             {
-                version = remainder.Substring(1, slashIndex - 1);
+                version = remainder[1..slashIndex];
                 if (slashIndex < remainder.Length - 1)
                 {
-                    filePath = remainder.Substring(slashIndex + 1);
+                    filePath = remainder[(slashIndex + 1)..];
                 }
             }
             else
             {
-                version = remainder.Substring(1);
+                version = remainder[1..];
             }
         }
         else if (remainder.StartsWith('/'))
         {
             if (remainder.Length > 1)
             {
-                filePath = remainder.Substring(1);
+                filePath = remainder[1..];
             }
         }
 
@@ -139,7 +122,7 @@ public partial class NpmEndpointHandlers
         return !string.IsNullOrWhiteSpace(packageName);
     }
 
-    public static async Task<IResult> HandleNpmRequestAsync(
+    internal static async Task<IResult> HandleNpmRequestAsync(
         string packageName,
         string version,
         string? filePath,
@@ -257,18 +240,18 @@ public partial class NpmEndpointHandlers
         }
     }
 
-    private static readonly Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider _contentTypeProvider = new();
+    private static readonly Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider ContentTypeProvider = new();
 
     static NpmEndpointHandlers()
     {
-        _contentTypeProvider.Mappings[".cjs"] = "text/javascript";
-        _contentTypeProvider.Mappings[".mjs"] = "text/javascript";
-        _contentTypeProvider.Mappings[".map"] = "application/json";
+        ContentTypeProvider.Mappings[".cjs"] = "text/javascript";
+        ContentTypeProvider.Mappings[".mjs"] = "text/javascript";
+        ContentTypeProvider.Mappings[".map"] = "application/json";
     }
 
     private static string GetContentType(string filePath)
     {
-        return _contentTypeProvider.TryGetContentType(filePath, out var contentType) ?
+        return ContentTypeProvider.TryGetContentType(filePath, out var contentType) ?
             contentType :
             "application/octet-stream";
     }

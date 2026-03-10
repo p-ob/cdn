@@ -64,7 +64,7 @@ public class NpmRegistryClient(
                     var dashIndex = cleanVersion.IndexOf('-');
                     if (dashIndex > 0)
                     {
-                        cleanVersion = cleanVersion.Substring(0, dashIndex);
+                        cleanVersion = cleanVersion[..dashIndex];
                     }
 
                     return Version.TryParse(cleanVersion, out var parsed) ? parsed : new Version(0, 0);
